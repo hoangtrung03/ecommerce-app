@@ -5,11 +5,41 @@ import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
 import 'react-native-reanimated'
 
+import { RootScaleProvider, useRootScale } from '@/contexts/RootScaleContext'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { Stack } from 'expo-router'
+import { StyleSheet, View } from 'react-native'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+
+function AnimatedStack() {
+  const { scale } = useRootScale()
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { scale: scale.value },
+        {
+          translateY: (1 - scale.value) * -150
+        }
+      ]
+    }
+  })
+
+  return (
+    <View style={{ flex: 1 }}>
+      <Animated.View style={[styles.stackContainer, animatedStyle]}>
+        <Stack>
+          <Stack.Screen name='index' options={{ headerShown: false }} />
+          <Stack.Screen name='(app)' options={{ headerShown: false }} />
+          <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+          <Stack.Screen name='+not-found' />
+        </Stack>
+      </Animated.View>
+    </View>
+  )
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme()
@@ -46,13 +76,18 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name='index' options={{ headerShown: false }} />
-        <Stack.Screen name='(app)' options={{ headerShown: false }} />
-        <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-        <Stack.Screen name='+not-found' />
-      </Stack>
-      <StatusBar style='auto' />
+      <RootScaleProvider>
+        <AnimatedStack />
+        <StatusBar style='auto' />
+      </RootScaleProvider>
     </ThemeProvider>
   )
 }
+
+const styles = StyleSheet.create({
+  stackContainer: {
+    flex: 1,
+    overflow: 'hidden',
+    borderRadius: 5
+  }
+})
