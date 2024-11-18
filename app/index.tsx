@@ -1,4 +1,4 @@
-import { getItemStore, storeData } from '@/libs/utils/storageHelper'
+import { getItemStore, setItemStore } from '@/libs/utils/storageHelper'
 import { Redirect } from 'expo-router'
 import { useEffect, useState } from 'react'
 
@@ -15,7 +15,7 @@ export default function Page() {
       if (hasLaunched === 'true') {
         setHasLaunched(true)
       } else {
-        await storeData(HAS_LAUNCHED, 'true')
+        await setItemStore(HAS_LAUNCHED, 'true')
       }
       setIsRedirectReady(true)
     }
