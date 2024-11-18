@@ -17,8 +17,6 @@ export default function Profile() {
           </ImageBackground>
           <View style={styles.info}>
             <Text style={styles.profileName}>Vũ Hoàng Trung</Text>
-            <Text style={styles.profileDetail}>Email: email@gmail.com</Text>
-            <Text style={styles.profileDetail}>Phone: 123-456-7890</Text>
           </View>
         </View>
         <View style={styles.btnWrapper}>
@@ -65,12 +63,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 10,
     textAlign: 'center'
-  },
-  profileDetail: {
-    fontSize: 16,
-    color: '#666',
-    marginBottom: 8,
-    fontFamily: 'Poppins-Regular'
   },
   btnWrapper: {
     marginTop: 20,

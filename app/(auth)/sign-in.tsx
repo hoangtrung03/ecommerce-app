@@ -3,7 +3,7 @@ import InputField from '@/components/InputField'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { Link, router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function SignIn() {
@@ -52,15 +52,20 @@ export default function SignIn() {
       <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 40 }}>
         <Text style={[styles.createNewAccount, { color: '#0286FF' }]}>Or continue with</Text>
         <View style={styles.separator}>
-          <TouchableOpacity style={styles.separatorBtn}>
-            <Ionicons name='logo-google' size={28} />
-          </TouchableOpacity>
+          {Platform.OS === 'android' && (
+            <TouchableOpacity style={styles.separatorBtn}>
+              <Ionicons name='logo-google' size={28} />
+            </TouchableOpacity>
+          )}
           <TouchableOpacity style={styles.separatorBtn}>
             <Ionicons name='logo-facebook' size={28} />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.separatorBtn}>
-            <FontAwesome name='apple' size={28} />
-          </TouchableOpacity>
+          {Platform.OS === 'ios' ||
+            (Platform.OS === 'macos' && (
+              <TouchableOpacity style={styles.separatorBtn}>
+                <FontAwesome name='apple' size={28} />
+              </TouchableOpacity>
+            ))}
         </View>
       </View>
     </SafeAreaView>
