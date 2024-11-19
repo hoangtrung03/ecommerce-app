@@ -29,7 +29,7 @@ class Http {
     this.initializeTokens()
 
     this.instance = axios.create({
-      baseURL: config.API_URL,
+      baseURL: config.EXPO_PUBLIC_API_URL,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',

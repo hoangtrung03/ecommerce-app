@@ -24,3 +24,7 @@ export function isAxiosExpiredTokenError<UnauthorizedError>(error: unknown): err
     error.response?.data?.data?.name === 'EXPIRED_TOKEN'
   )
 }
+
+export function formatCurrency(currency: number) {
+  return new Intl.NumberFormat('de-DE').format(currency)
+}

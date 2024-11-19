@@ -1,7 +1,7 @@
 // https://docs.expo.dev/guides/using-eslint/
 module.exports = {
-  extends: ['expo', 'prettier'],
-  plugins: ['prettier', 'import'],
+  extends: ['expo', 'prettier', 'plugin:@tanstack/query/recommended'],
+  plugins: ['prettier', 'import', '@tanstack/query'],
   rules: {
     'prettier/prettier': [
       'warn',

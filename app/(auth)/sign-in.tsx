@@ -13,7 +13,7 @@ export default function SignIn() {
   })
 
   const handleLogin = useCallback(() => {
-    router.push('/(app)/(tabs)/home')
+    router.replace('/(app)/(tabs)/home')
   }, [])
 
   return (

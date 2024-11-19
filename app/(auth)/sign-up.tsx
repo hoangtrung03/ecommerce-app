@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'semibold',
     textAlign: 'center',
-    maxWidth: 225,
+    maxWidth: 325,
     alignSelf: 'center',
     fontFamily: 'Poppins-SemiBold'
   },

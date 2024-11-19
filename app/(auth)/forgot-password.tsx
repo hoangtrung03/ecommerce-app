@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'semibold',
     textAlign: 'center',
-    maxWidth: 300,
+    maxWidth: 325,
     alignSelf: 'center',
     fontFamily: 'Poppins-SemiBold'
   },

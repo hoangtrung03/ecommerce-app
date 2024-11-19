@@ -2,13 +2,14 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import 'react-native-reanimated'
 
 import { RootScaleProvider, useRootScale } from '@/contexts/RootScaleContext'
 import { useColorScheme } from '@/hooks/useColorScheme'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Stack } from 'expo-router'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -28,16 +29,14 @@ function AnimatedStack() {
   })
 
   return (
-    <View style={{ flex: 1 }}>
-      <Animated.View style={[styles.stackContainer, animatedStyle]}>
-        <Stack>
-          <Stack.Screen name='index' options={{ headerShown: false }} />
-          <Stack.Screen name='(app)' options={{ headerShown: false }} />
-          <Stack.Screen name='(auth)' options={{ headerShown: false }} />
-          <Stack.Screen name='+not-found' />
-        </Stack>
-      </Animated.View>
-    </View>
+    <Animated.View style={[styles.stackContainer, animatedStyle]}>
+      <Stack>
+        <Stack.Screen name='index' options={{ headerShown: false }} />
+        <Stack.Screen name='(app)' options={{ headerShown: false }} />
+        <Stack.Screen name='(auth)' options={{ headerShown: false }} />
+        <Stack.Screen name='+not-found' />
+      </Stack>
+    </Animated.View>
   )
 }
 
@@ -64,6 +63,8 @@ export default function RootLayout() {
     'Poppins-ExtraBoldItalic': require('../assets/fonts/Poppins-ExtraBoldItalic.ttf')
   })
 
+  const [queryClient] = useState(() => new QueryClient())
+
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync()
@@ -76,10 +77,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <RootScaleProvider>
-        <AnimatedStack />
-        <StatusBar style='auto' />
-      </RootScaleProvider>
+      <QueryClientProvider client={queryClient}>
+        <RootScaleProvider>
+          <AnimatedStack />
+          <StatusBar style='auto' />
+        </RootScaleProvider>
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }
