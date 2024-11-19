@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "react-native-starter",
-    "slug": "react-native-starter",
+    "name": "Lotso Shop",
+    "slug": "lotsoshop-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -43,9 +43,9 @@
         "origin": false
       },
       "eas": {
-        "projectId": "8fa85dc9-4711-4f6e-bb43-74ce073464fa"
+        "projectId": "b73b4a48-5fef-4904-9d0a-c2135658ca8e"
       }
     },
-    "owner": "trungaioz"
+    "owner": "trung300920"
   }
 }
