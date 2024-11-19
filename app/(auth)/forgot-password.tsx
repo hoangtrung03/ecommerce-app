@@ -18,20 +18,27 @@ export default function SignIn() {
 
   return (
     <SafeAreaView style={styles.container} data-test-id='sign-in-page'>
-      <Text style={styles.title}>Forgot Password</Text>
-      <Text style={styles.description}>Please enter your email to reset your password</Text>
-      <View data-test-id='form-sign-in' style={styles.inputFieldWrapper}>
-        <InputField
-          placeholder='Email'
-          textContentType='emailAddress'
-          value={form.email}
-          onChangeText={(value) => setForm({ ...form, email: value })}
-          containerStyle={{ height: 64 }}
-        />
-        <CustomButton title='Submit' onPress={handleLogin} styleText={{ color: 'white' }} styleButton={styles.button} />
+      <View>
+        <Text style={styles.title}>Forgot Password</Text>
+        <Text style={styles.description}>Please enter your email to reset your password</Text>
+        <View data-test-id='form-sign-in' style={styles.inputFieldWrapper}>
+          <InputField
+            placeholder='Email'
+            textContentType='emailAddress'
+            value={form.email}
+            onChangeText={(value) => setForm({ ...form, email: value })}
+            containerStyle={{ height: 64 }}
+          />
+          <CustomButton
+            title='Submit'
+            onPress={handleLogin}
+            styleText={{ color: 'white' }}
+            styleButton={styles.button}
+          />
+        </View>
       </View>
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 40 }}>
-        <Text style={[styles.createNewAccount, { color: '#0286FF' }]}>Or continue with</Text>
+      <View style={styles.separatorWrapper}>
+        <Text style={[styles.centerText, { color: '#0286FF' }]}>Or continue with</Text>
         <View style={styles.separator}>
           {Platform.OS === 'android' && (
             <TouchableOpacity style={styles.separatorBtn}>
@@ -57,8 +64,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 100,
-    backgroundColor: '#ffffff'
+    paddingVertical: 32,
+    backgroundColor: '#ffffff',
+    justifyContent: 'space-between'
   },
   title: {
     fontSize: 30,
@@ -77,26 +85,20 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold'
   },
   inputFieldWrapper: {
-    marginTop: 74,
-    gap: 30
+    marginTop: 20,
+    gap: 12
   },
   button: {
     borderRadius: 8,
     height: 64,
     marginTop: 12
   },
-  forgotPassword: {
-    textAlign: 'right',
-    color: '#0286FF',
-    fontWeight: 'semibold',
-    marginTop: 12,
-    fontFamily: 'Poppins-SemiBold'
-  },
-  createNewAccount: {
+  centerText: {
     textAlign: 'center',
     fontWeight: 'semibold',
     fontFamily: 'Poppins-SemiBold'
   },
+  separatorWrapper: {},
   separator: {
     marginTop: 20,
     flexDirection: 'row',

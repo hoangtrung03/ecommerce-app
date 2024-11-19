@@ -18,44 +18,46 @@ export default function SignUp() {
 
   return (
     <SafeAreaView style={styles.container} data-test-id='sign-in-page'>
-      <Text style={styles.title}>Create Account</Text>
-      <Text style={styles.description}>Create an account so you can explore all the existing jobs</Text>
-      <View data-test-id='form-sign-in' style={styles.inputFieldWrapper}>
-        <InputField
-          placeholder='Email'
-          textContentType='emailAddress'
-          value={form.email}
-          onChangeText={(value) => setForm({ ...form, email: value })}
-          containerStyle={{ height: 64 }}
-        />
-        <InputField
-          placeholder='Password'
-          secureTextEntry={true}
-          textContentType='password'
-          value={form.password}
-          onChangeText={(value) => setForm({ ...form, password: value })}
-          containerStyle={{ height: 64 }}
-        />
-        <InputField
-          placeholder='Confirm Password'
-          secureTextEntry={true}
-          textContentType='password'
-          value={form.password}
-          onChangeText={(value) => setForm({ ...form, password: value })}
-          containerStyle={{ height: 64 }}
-        />
-        <CustomButton
-          title='Sign Up'
-          onPress={handleRegister}
-          styleText={{ color: 'white' }}
-          styleButton={styles.button}
-        />
-        <Link href='/(auth)/sign-in' style={styles.createNewAccount}>
-          Already have an account
-        </Link>
+      <View>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.description}>Create an account so you can explore all the existing jobs</Text>
+        <View data-test-id='form-sign-in' style={styles.inputFieldWrapper}>
+          <InputField
+            placeholder='Email'
+            textContentType='emailAddress'
+            value={form.email}
+            onChangeText={(value) => setForm({ ...form, email: value })}
+            containerStyle={{ height: 64 }}
+          />
+          <InputField
+            placeholder='Password'
+            secureTextEntry={true}
+            textContentType='password'
+            value={form.password}
+            onChangeText={(value) => setForm({ ...form, password: value })}
+            containerStyle={{ height: 64 }}
+          />
+          <InputField
+            placeholder='Confirm Password'
+            secureTextEntry={true}
+            textContentType='password'
+            value={form.password}
+            onChangeText={(value) => setForm({ ...form, password: value })}
+            containerStyle={{ height: 64 }}
+          />
+          <CustomButton
+            title='Sign Up'
+            onPress={handleRegister}
+            styleText={{ color: 'white' }}
+            styleButton={styles.button}
+          />
+          <Link href='/(auth)/sign-in' style={styles.centerText}>
+            Already have an account
+          </Link>
+        </View>
       </View>
-      <View style={{ flex: 1, justifyContent: 'flex-end', marginBottom: 40 }}>
-        <Text style={[styles.createNewAccount, { color: '#0286FF' }]}>Or continue with</Text>
+      <View style={styles.separatorWrapper}>
+        <Text style={[styles.centerText, { color: '#0286FF' }]}>Or continue with</Text>
         <View style={styles.separator}>
           {Platform.OS === 'android' && (
             <TouchableOpacity style={styles.separatorBtn}>
@@ -81,8 +83,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 100,
-    backgroundColor: '#ffffff'
+    paddingVertical: 32,
+    backgroundColor: '#ffffff',
+    justifyContent: 'space-between'
   },
   title: {
     fontSize: 30,
@@ -101,19 +104,19 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold'
   },
   inputFieldWrapper: {
-    marginTop: 74,
-    gap: 30
+    marginTop: 20,
+    gap: 12
   },
   button: {
     borderRadius: 8,
-    height: 64,
-    marginTop: 12
+    height: 64
   },
-  createNewAccount: {
+  centerText: {
     textAlign: 'center',
     fontWeight: 'semibold',
     fontFamily: 'Poppins-SemiBold'
   },
+  separatorWrapper: {},
   separator: {
     marginTop: 20,
     flexDirection: 'row',
