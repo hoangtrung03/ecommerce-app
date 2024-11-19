@@ -1,7 +1,6 @@
 import Loading from '@/components/Loading'
 import ProductItem from '@/components/ProductItem'
 import productApi from '@/libs/apis/product.api'
-import useAppStore from '@/libs/store/auth.store'
 import { Product } from '@/types/product.type'
 import { useQuery } from '@tanstack/react-query'
 import React, { useCallback, useMemo } from 'react'
@@ -13,10 +12,6 @@ export default function Home() {
     queryKey: ['products'],
     queryFn: () => productApi.getProducts({ page: 1, limit: 20 })
   })
-
-  const { isAuthenticated, profile } = useAppStore()
-  console.log('isAuthenticated', isAuthenticated)
-  console.log('profile', profile)
 
   const products = useMemo(() => data?.data?.data?.products?.flat() || [], [data])
 
