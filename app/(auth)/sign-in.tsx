@@ -79,6 +79,7 @@ export default function SignIn() {
             styleText={{ color: 'white' }}
             styleButton={styles.button}
             IconRight={loginMutation.isPending ? () => <ActivityIndicator size='small' color='#ffffff' /> : undefined}
+            disabled={loginMutation.isPending}
           />
           <Link href='/(auth)/sign-up' style={[styles.centerText, { color: '#0286FF' }]}>
             Create new account

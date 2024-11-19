@@ -93,6 +93,7 @@ export default function SignUp() {
             IconRight={
               registerAccountMutation.isPending ? () => <ActivityIndicator size='small' color='#ffffff' /> : undefined
             }
+            disabled={registerAccountMutation.isPending}
           />
           <Link href='/(auth)/sign-in' style={[styles.centerText, { color: '#0286FF' }]}>
             Already have an account
