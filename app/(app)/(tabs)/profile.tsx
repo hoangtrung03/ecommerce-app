@@ -46,10 +46,7 @@ export default function Profile() {
       <ScrollView>
         <View>
           <ImageBackground source={{ uri: 'https://via.placeholder.com/400x200' }} style={styles.backgroundImage}>
-            <Image
-              source={{ uri: data?.data?.data?.avatar || 'https://via.placeholder.com/150' }}
-              style={styles.avatarImage}
-            />
+            <Image source={{ uri: data?.data?.data?.avatar }} style={styles.avatarImage} />
           </ImageBackground>
           <View style={styles.info}>
             <Text style={styles.profileName}>{data?.data?.data?.name}</Text>
@@ -78,7 +75,8 @@ const styles = StyleSheet.create({
     height: 200,
     resizeMode: 'cover',
     position: 'relative',
-    marginBottom: 75
+    marginBottom: 75,
+    backgroundColor: '#CCCCCC'
   },
   avatarImage: {
     width: 150,
@@ -89,7 +87,9 @@ const styles = StyleSheet.create({
     transform: [{ translateY: '50%' }],
     alignSelf: 'center',
     borderWidth: 4,
-    borderColor: 'white'
+    borderColor: 'white',
+    resizeMode: 'contain',
+    backgroundColor: '#CCCCCC'
   },
   info: {
     paddingHorizontal: 20
