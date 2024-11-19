@@ -1,6 +1,7 @@
 import CustomButton from '@/components/CustomButton'
 import Loading from '@/components/Loading'
 import productApi from '@/libs/apis/product.api'
+import { formatCurrency } from '@/libs/utils/utils'
 import { AntDesign } from '@expo/vector-icons'
 import { useQuery } from '@tanstack/react-query'
 import { useLocalSearchParams } from 'expo-router'
@@ -14,7 +15,8 @@ export default function Page() {
 
   const { data, isLoading } = useQuery({
     queryKey: ['product-item', id],
-    queryFn: () => productApi.getProductDetail(id as string)
+    queryFn: () => productApi.getProductDetail(id as string),
+    enabled: !!id
   })
 
   const product = useMemo(() => data?.data?.data, [data])
@@ -41,17 +43,20 @@ export default function Page() {
         ) : null}
 
         <View style={styles.productInfo}>
-          <Text style={styles.productName}>{product?.name}</Text>
+          <Text style={styles.productName} numberOfLines={2}>
+            {product?.name}
+          </Text>
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>${product?.price}</Text>
-            <Text style={styles.oldPrice}>${product?.price_before_discount}</Text>
+            <Text style={styles.price}>đ{product?.price && formatCurrency(product?.price)}</Text>
+            <Text style={styles.oldPrice}>
+              đ{product?.price_before_discount && formatCurrency(product?.price_before_discount)}
+            </Text>
           </View>
           <View style={styles.ratingContainer}>
             <AntDesign name='star' size={24} color='#FFD700' />
             <Text style={styles.rating}>{product?.rating}</Text>
           </View>
           <Text style={styles.description}>{product?.description}</Text>
-
           <View style={styles.statsContainer}>
             <View style={styles.statItem}>
               <Text style={styles.statLabel}>Quantity</Text>
@@ -79,11 +84,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff'
   },
   imageContainer: {
-    height: 300
+    height: 300,
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
   },
   productImage: {
     width: '100%',
-    height: '100%'
+    height: '100%',
+    resizeMode: 'contain'
   },
   productInfo: {
     padding: 16

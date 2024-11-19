@@ -2,7 +2,7 @@ import { formatCurrency } from '@/libs/utils/utils'
 import { Product } from '@/types/product.type'
 import { Link } from 'expo-router'
 import React from 'react'
-import { Image, StyleSheet, Text } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 
 export default function ProductItem(product: { item: Product }) {
   return (
@@ -13,12 +13,16 @@ export default function ProductItem(product: { item: Product }) {
       }}
       style={styles.productItem}
     >
-      <Image source={{ uri: product.item.image || 'https://via.placeholder.com/150' }} style={styles.productImage} />
-      <Text style={styles.productName} numberOfLines={2}>
-        {product.item.name}
-      </Text>
-      <Text style={styles.productPriceDiscount}>đ{formatCurrency(product.item.price_before_discount)}</Text>
-      <Text style={styles.productPrice}>đ{formatCurrency(product.item.price)}</Text>
+      <View style={{ width: '100%' }}>
+        <Image source={{ uri: product.item.image || 'https://via.placeholder.com/150' }} style={styles.productImage} />
+        <Text style={styles.productName} numberOfLines={2}>
+          {product.item.name}
+        </Text>
+      </View>
+      <View>
+        <Text style={styles.productPriceDiscount}>đ{formatCurrency(product.item.price_before_discount)}</Text>
+        <Text style={styles.productPrice}>đ{formatCurrency(product.item.price)}</Text>
+      </View>
     </Link>
   )
 }
@@ -39,7 +43,8 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 100,
     borderRadius: 6,
-    marginBottom: 8
+    marginBottom: 8,
+    resizeMode: 'contain'
   },
   productName: {
     fontSize: 14,

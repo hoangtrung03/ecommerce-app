@@ -1,24 +1,58 @@
+import authApi from '@/libs/apis/auth.api'
+import userApi from '@/libs/apis/user.api'
 import useAppStore from '@/libs/store/auth.store'
-import { useCallback } from 'react'
+import { useMutation, useQuery } from '@tanstack/react-query'
+import { useFocusEffect } from 'expo-router'
+import { useCallback, useEffect } from 'react'
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Profile() {
-  const { reset, profile } = useAppStore()
+  const { reset, setProfile } = useAppStore()
+
+  const { data, refetch } = useQuery({
+    queryKey: ['profile'],
+    queryFn: () => userApi.getProfile()
+  })
+
+  useEffect(() => {
+    if (data) {
+      setProfile(data?.data?.data)
+    }
+  }, [data, setProfile])
+
+  // Mutation logout
+  const { mutate } = useMutation({
+    mutationFn: () => authApi.logout()
+  })
 
   const handleLogout = useCallback(() => {
-    reset()
-  }, [reset])
+    mutate(undefined, {
+      onSuccess: () => {
+        reset()
+      }
+    })
+  }, [mutate, reset])
+
+  // Refetch profile when focus on this screen
+  useFocusEffect(
+    useCallback(() => {
+      refetch()
+    }, [refetch])
+  )
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
           <ImageBackground source={{ uri: 'https://via.placeholder.com/400x200' }} style={styles.backgroundImage}>
-            <Image source={{ uri: profile?.avatar || 'https://via.placeholder.com/150' }} style={styles.avatarImage} />
+            <Image
+              source={{ uri: data?.data?.data?.avatar || 'https://via.placeholder.com/150' }}
+              style={styles.avatarImage}
+            />
           </ImageBackground>
           <View style={styles.info}>
-            <Text style={styles.profileName}>{profile?.name}</Text>
+            <Text style={styles.profileName}>{data?.data?.data?.name}</Text>
           </View>
         </View>
         <View style={styles.btnWrapper}>
