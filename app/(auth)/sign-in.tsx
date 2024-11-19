@@ -78,15 +78,15 @@ export default function SignIn() {
             onPress={handleLogin}
             styleText={{ color: 'white' }}
             styleButton={styles.button}
-            IconRight={loginMutation.isPending ? () => <ActivityIndicator size='large' color='#ffffff' /> : undefined}
+            IconRight={loginMutation.isPending ? () => <ActivityIndicator size='small' color='#ffffff' /> : undefined}
           />
-          <Link href='/(auth)/sign-up' style={styles.centerText}>
+          <Link href='/(auth)/sign-up' style={[styles.centerText, { color: '#0286FF' }]}>
             Create new account
           </Link>
         </View>
       </View>
       <View style={styles.separatorWrapper}>
-        <Text style={[styles.centerText, { color: '#0286FF' }]}>Or continue with</Text>
+        <Text style={styles.centerText}>Or continue with</Text>
         <View style={styles.separator}>
           {Platform.OS === 'android' && (
             <TouchableOpacity style={styles.separatorBtn}>

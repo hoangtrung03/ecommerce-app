@@ -38,7 +38,7 @@ export default function SignIn() {
         </View>
       </View>
       <View style={styles.separatorWrapper}>
-        <Text style={[styles.centerText, { color: '#0286FF' }]}>Or continue with</Text>
+        <Text style={styles.centerText}>Or continue with</Text>
         <View style={styles.separator}>
           {Platform.OS === 'android' && (
             <TouchableOpacity style={styles.separatorBtn}>

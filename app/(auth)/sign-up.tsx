@@ -8,7 +8,7 @@ import { FontAwesome, Ionicons } from '@expo/vector-icons'
 import { useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 type FormData = {
@@ -90,14 +90,17 @@ export default function SignUp() {
             onPress={handleRegister}
             styleText={{ color: 'white' }}
             styleButton={styles.button}
+            IconRight={
+              registerAccountMutation.isPending ? () => <ActivityIndicator size='small' color='#ffffff' /> : undefined
+            }
           />
-          <Link href='/(auth)/sign-in' style={styles.centerText}>
+          <Link href='/(auth)/sign-in' style={[styles.centerText, { color: '#0286FF' }]}>
             Already have an account
           </Link>
         </View>
       </View>
       <View style={styles.separatorWrapper}>
-        <Text style={[styles.centerText, { color: '#0286FF' }]}>Or continue with</Text>
+        <Text style={styles.centerText}>Or continue with</Text>
         <View style={styles.separator}>
           {Platform.OS === 'android' && (
             <TouchableOpacity style={styles.separatorBtn}>
