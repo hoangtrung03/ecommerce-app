@@ -1,20 +1,60 @@
 import CustomButton from '@/components/CustomButton'
 import InputField from '@/components/InputField'
+import authApi from '@/libs/apis/auth.api'
+import useAppStore from '@/libs/store/auth.store'
+import { isAxiosUnprocessableEntityError } from '@/libs/utils/utils'
+import { ErrorResponse } from '@/types/utils.type'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
-import { Link } from 'expo-router'
+import { useMutation } from '@tanstack/react-query'
+import { Link, router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+type FormData = {
+  email: string
+  password: string
+  confirm_password: string
+}
+
 export default function SignUp() {
   const [form, setForm] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirm_password: ''
+  })
+  const { setIsAuthenticated, setProfile } = useAppStore()
+
+  const registerAccountMutation = useMutation({
+    mutationFn: (body: Omit<FormData, 'confirm_password'>) => authApi.registerAccount(body)
   })
 
   const handleRegister = useCallback(() => {
-    console.log('login')
-  }, [])
+    registerAccountMutation.mutate(
+      {
+        email: form.email,
+        password: form.password
+      },
+      {
+        onSuccess: async (data) => {
+          await setIsAuthenticated(true)
+          await setProfile(data.data.data.user)
+
+          router.replace('/(app)/(tabs)/home')
+        },
+        onError: (error) => {
+          if (isAxiosUnprocessableEntityError<ErrorResponse<Omit<FormData, 'confirm_password'>>>(error)) {
+            const formError = error.response?.data.data
+
+            if (formError) {
+              console.log('formError', formError)
+            }
+          }
+        }
+      }
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form.email, form.password, setIsAuthenticated, setProfile])
 
   return (
     <SafeAreaView style={styles.container} data-test-id='sign-in-page'>
@@ -41,8 +81,8 @@ export default function SignUp() {
             placeholder='Confirm Password'
             secureTextEntry={true}
             textContentType='password'
-            value={form.password}
-            onChangeText={(value) => setForm({ ...form, password: value })}
+            value={form.confirm_password}
+            onChangeText={(value) => setForm({ ...form, confirm_password: value })}
             containerStyle={{ height: 64 }}
           />
           <CustomButton

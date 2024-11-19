@@ -1,3 +1,4 @@
+import useAppStore from '@/libs/store/auth.store'
 import { getItemStore, setItemStore } from '@/libs/utils/storageHelper'
 import { Redirect } from 'expo-router'
 import { useEffect, useState } from 'react'
@@ -7,6 +8,8 @@ const HAS_LAUNCHED = 'HAS_LAUNCHED'
 export default function Page() {
   const [hasLaunched, setHasLaunched] = useState(false)
   const [isRedirectReady, setIsRedirectReady] = useState(false)
+
+  const { isAuthenticated } = useAppStore()
 
   useEffect(() => {
     const getData = async () => {
@@ -22,6 +25,10 @@ export default function Page() {
 
     getData().catch((error) => console.log(error))
   }, [])
+
+  if (isAuthenticated) {
+    return <Redirect href='/(app)/(tabs)/home' />
+  }
 
   if (!isRedirectReady) {
     return null

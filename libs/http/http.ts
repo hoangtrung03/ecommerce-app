@@ -77,9 +77,11 @@ class Http {
           const message = data?.message || error.message
           console.log('message', message)
         }
+
         if (isAxiosUnauthorizedError<ErrorResponse<{ name: string; message: string }>>(error)) {
           const config = error.response?.config || ({ headers: {} } as InternalAxiosRequestConfig)
           const { url } = config
+
           if (isAxiosExpiredTokenError(error) && url !== URL_REFRESH_TOKEN) {
             // Prevent calling refresh token multiple times
             this.refreshTokenRequest = this.refreshTokenRequest
@@ -90,6 +92,7 @@ class Http {
                     this.refreshTokenRequest = null
                   }, 10000)
                 })
+
             return this.refreshTokenRequest.then((access_token) => {
               return this.instance({ ...config, headers: { ...config.headers, authorization: access_token } })
             })
@@ -99,6 +102,7 @@ class Http {
           this.refreshToken = null
           console.log('error', error.response?.data.data?.message || error.response?.data.message)
         }
+
         return Promise.reject(error)
       }
     )

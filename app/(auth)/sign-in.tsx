@@ -1,20 +1,53 @@
 import CustomButton from '@/components/CustomButton'
 import InputField from '@/components/InputField'
+import authApi from '@/libs/apis/auth.api'
+import useAppStore from '@/libs/store/auth.store'
+import { isAxiosUnprocessableEntityError } from '@/libs/utils/utils'
+import { ErrorResponse } from '@/types/utils.type'
 import { FontAwesome, Ionicons } from '@expo/vector-icons'
+import { useMutation } from '@tanstack/react-query'
 import { Link, router } from 'expo-router'
 import React, { useCallback, useState } from 'react'
-import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
+type FormData = {
+  email: string
+  password: string
+}
+
 export default function SignIn() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<FormData>({
     email: '',
     password: ''
   })
 
+  const { setIsAuthenticated, setProfile } = useAppStore()
+
+  const loginMutation = useMutation({
+    mutationFn: (body: FormData) => authApi.login(body)
+  })
+
   const handleLogin = useCallback(() => {
-    router.replace('/(app)/(tabs)/home')
-  }, [])
+    loginMutation.mutate(form, {
+      onSuccess: async (data) => {
+        await setIsAuthenticated(true)
+        await setProfile(data.data.data.user)
+
+        router.replace('/(app)/(tabs)/home')
+      },
+      onError: (error) => {
+        if (isAxiosUnprocessableEntityError<ErrorResponse<FormData>>(error)) {
+          const formError = error.response?.data.data
+
+          if (formError) {
+            console.log('formError', formError)
+          }
+        }
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [form, setIsAuthenticated, setProfile])
 
   return (
     <SafeAreaView style={styles.container} data-test-id='sign-in-page'>
@@ -45,6 +78,7 @@ export default function SignIn() {
             onPress={handleLogin}
             styleText={{ color: 'white' }}
             styleButton={styles.button}
+            IconRight={loginMutation.isPending ? () => <ActivityIndicator size='large' color='#ffffff' /> : undefined}
           />
           <Link href='/(auth)/sign-up' style={styles.centerText}>
             Create new account

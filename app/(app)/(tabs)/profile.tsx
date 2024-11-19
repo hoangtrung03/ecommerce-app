@@ -1,22 +1,24 @@
-import { router } from 'expo-router'
+import useAppStore from '@/libs/store/auth.store'
 import { useCallback } from 'react'
 import { Image, ImageBackground, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Profile() {
+  const { reset, profile } = useAppStore()
+
   const handleLogout = useCallback(() => {
-    router.replace('/(auth)/sign-in')
-  }, [])
+    reset()
+  }, [reset])
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
           <ImageBackground source={{ uri: 'https://via.placeholder.com/400x200' }} style={styles.backgroundImage}>
-            <Image source={{ uri: 'https://via.placeholder.com/150' }} style={styles.avatarImage} />
+            <Image source={{ uri: profile?.avatar || 'https://via.placeholder.com/150' }} style={styles.avatarImage} />
           </ImageBackground>
           <View style={styles.info}>
-            <Text style={styles.profileName}>Vũ Hoàng Trung</Text>
+            <Text style={styles.profileName}>{profile?.name}</Text>
           </View>
         </View>
         <View style={styles.btnWrapper}>
